@@ -5,7 +5,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Belle Multipurpose Bootstrap 4 Html Template</title>
+    <title>@ViewBag.Title</title>
     <meta name="description" content="description">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -49,10 +49,10 @@
                 </span>
                 <ul class="customer-links list-inline">
                     <li>
-                        <a href="/Identity/Account/Login">Login</a>
+                        <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Context.Request.Path">Login</a>
                     </li>
                     <li>
-                        <a href="/Identity/Account/Register">Create Account</a>
+                        <a asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@Context.Request.Path">Create Account</a>
                     </li>
                 </ul>
             </div>
@@ -66,8 +66,8 @@
         <div class="row align-items-center">
             <!--Desktop Logo-->
             <div class="logo col-md-2 col-lg-2 d-none d-lg-block">
-                <a asp-controller="Home" asp-action="Index">
-                    <img src="/images/logo.svg" alt="Belle Multipurpose Html Template" title="Belle Multipurpose Html Template"/>
+                <a asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="/images/logo.svg" alt="@ViewBag.Title" title="@ViewBag.Title"/>
                 </a>
             </div>
             <!--End Desktop Logo-->
@@ -83,10 +83,10 @@
                     <!-- for mobile -->
                     <ul id="siteNav" class="site-nav medium center hidearrow">
                         <li class="lvl1">
-                            <a asp-controller="Home" asp-action="Index">Home</a>
+                            <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="lvl1">
-                            <a asp-controller="Product" asp-action="Index">Product</a>
+                            <a asp-area="" asp-controller="Product" asp-action="Index">Product</a>
                         </li>
                     </ul>
                 </nav>
@@ -95,7 +95,7 @@
             <!--Mobile Logo-->
             <div class="col-6 col-sm-6 col-md-6 col-lg-2 d-block d-lg-none mobile-logo">
                 <div class="logo">
-                    <a asp-controller="Home" asp-action="Index">
+                    <a asp-area="" asp-controller="Home" asp-action="Index">
                         <img src="/images/logo.svg" alt="Belle Multipurpose Html Template" title="Belle Multipurpose Html Template"/>
                     </a>
                 </div>
@@ -183,8 +183,8 @@
                                 </span>
                             </div>
                             <div class="buttonSet text-center">
-                                <a href="cart.html" class="btn btn-secondary btn--small">View Cart</a>
-                                <a href="checkout.html" class="btn btn-secondary btn--small">Checkout</a>
+                                <a asp-area="" asp-controller="Cart" asp-action="Index" class="btn btn-secondary btn--small">View Cart</a>
+                                <a asp-area="" asp-controller="Cart" asp-action="Index" class="btn btn-secondary btn--small">Checkout</a>
                             </div>
                         </div>
                     </div>
@@ -205,10 +205,10 @@
     <div class="closemobileMenu"><i class="icon anm anm-times-l pull-right"></i> Close Menu</div>
     <ul id="MobileNav" class="mobile-nav">
         <li class="lvl1">
-            <a asp-controller="Home" asp-action="Index">Home</a>
+            <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
         </li>
         <li class="lvl1">
-            <a asp-controller="Product" asp-action="Index">Products</a>
+            <a asp-area="" asp-controller="Product" asp-action="Index">Products</a>
         </li>
     </ul>
 </div>
@@ -216,8 +216,8 @@
 
 <!--Body Content-->
 <div id="page-content">
-    
-@RenderBody()
+
+    @RenderBody()
 
 </div>
 <!--End Body Content-->
@@ -270,22 +270,19 @@
                         </ul>
                     </div>
                     <div class="col-12 col-sm-12 col-md-3 col-lg-3 footer-links">
-                        <h4 class="h4">Customer Services</h4>
+                        <h4 class="h4">User Management</h4>
                         <ul>
                             <li>
-                                <a href="#">Request Personal Data</a>
+                                <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Context.Request.Path">Login</a>
                             </li>
                             <li>
-                                <a href="#">FAQ's</a>
+                                <a href="#">Register</a>
                             </li>
                             <li>
-                                <a href="#">Contact Us</a>
+                                <a href="#">Change Password</a>
                             </li>
                             <li>
-                                <a href="#">Orders and Returns</a>
-                            </li>
-                            <li>
-                                <a href="#">Support Center</a>
+                                <a href="#">User Profile</a>
                             </li>
                         </ul>
                     </div>
