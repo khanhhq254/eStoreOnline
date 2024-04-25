@@ -1,9 +1,9 @@
 using System.Collections.Immutable;
 using eStoreOnline.Application.Interfaces;
 using eStoreOnline.Application.Models.Carts;
-using eStoreOnline.Data;
 using eStoreOnline.Domain.Entities;
 using eStoreOnline.Domain.Exceptions;
+using eStoreOnline.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace eStoreOnline.Application.Implementations;
@@ -110,13 +110,12 @@ public class CartService : ICartService
 
         if (cart == null)
             return new CartModel();
-        
+
         if (request.CartDetails.Count == 0)
             return new CartModel();
 
         foreach (var item in request.CartDetails)
         {
-            
             var cartDetail = cart.CartDetails.Find(x => x.ProductId == item.ProductId);
 
             if (cartDetail == null)
@@ -141,17 +140,18 @@ public class CartService : ICartService
                 cartDetail.ModifiedBy = request.UserId;
             }
         }
-        
+
         // get products that were removed from cart
-        var removedProducts = cart.CartDetails.Where(x => !request.CartDetails.Select(y => y.ProductId).Contains(x.ProductId)).ToList();
+        var removedProducts = cart.CartDetails
+            .Where(x => !request.CartDetails.Select(y => y.ProductId).Contains(x.ProductId)).ToList();
 
         foreach (var item in removedProducts)
         {
             cart.CartDetails.Remove(item);
         }
-        
+
         await _context.SaveChangesAsync();
-        
+
         var result = await GetCartByUserAsync(new CartRequestModel()
         {
             CartId = request.CartId,

@@ -2,11 +2,11 @@ using eStoreOnline.Application.Interfaces;
 using eStoreOnline.Application.Models;
 using eStoreOnline.Application.Models.Carts;
 using eStoreOnline.Application.Models.Orders;
-using eStoreOnline.Data;
 using eStoreOnline.Domain.Entities;
 using eStoreOnline.Domain.Enums;
 using eStoreOnline.Domain.Exceptions;
 using eStoreOnline.Infrastructure.Consts;
+using eStoreOnline.Infrastructure.Data;
 using eStoreOnline.Infrastructure.Interfaces;
 using eStoreOnline.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
@@ -85,10 +85,11 @@ public class OrderService : IOrderService
     public async Task<PaginatedModel<OrderModel>> GetOrdersAsync(GetOrderRequestModel request)
     {
         var orders = await _context.Orders
-            .Where(x => request.UserId.HasValue && x.UserId == request.UserId)
+            .Where(x => !string.IsNullOrWhiteSpace(request.UserId) && x.UserId == request.UserId)
             .Take(request.PageSize).Skip(request.PageIndex * request.PageSize).ToListAsync();
 
-        var total = await _context.Orders.CountAsync(x => request.UserId.HasValue && x.UserId == request.UserId);
+        var total = await _context.Orders.CountAsync(x =>
+            !string.IsNullOrWhiteSpace(request.UserId) && x.UserId == request.UserId);
 
         var orderData = orders.Select(x => new OrderModel
         {
@@ -106,7 +107,7 @@ public class OrderService : IOrderService
         var order = await _context.Orders
             .Include(x => x.OrderDetails)
             .ThenInclude(x => x.Product)
-            .Where(x => request.UserId.HasValue && x.UserId == request.UserId)
+            .Where(x => !string.IsNullOrWhiteSpace(request.UserId) && x.UserId == request.UserId)
             .Where(x => x.Id == request.OrderId)
             .Take(request.PageSize)
             .Skip(request.PageIndex * request.PageSize)

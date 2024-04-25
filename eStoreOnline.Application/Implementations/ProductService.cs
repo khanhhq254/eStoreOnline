@@ -1,9 +1,9 @@
 using eStoreOnline.Application.Interfaces;
 using eStoreOnline.Application.Models;
 using eStoreOnline.Application.Models.Products;
-using eStoreOnline.Data;
 using eStoreOnline.Domain.Entities;
 using eStoreOnline.Domain.Exceptions;
+using eStoreOnline.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace eStoreOnline.Application.Implementations;
@@ -19,12 +19,12 @@ public class ProductService : IProductService
 
     public async Task<PaginatedModel<GetAllProductModel>> GetAllProductsAsync(GetAllProductRequestModel request)
     {
-        var count = await _context.Products.CountAsync(x => !x.DeletedBy.HasValue);
+        var count = await _context.Products.CountAsync(x => string.IsNullOrWhiteSpace(x.DeletedBy));
 
         var products = await _context.Products
             .Take(request.PageSize)
             .Skip(request.PageSize * request.PageIndex)
-            .Where(x => !x.DeletedBy.HasValue)
+            .Where(x => string.IsNullOrWhiteSpace(x.DeletedBy))
             .Select(x => new GetAllProductModel
             {
                 Id = x.Id,
