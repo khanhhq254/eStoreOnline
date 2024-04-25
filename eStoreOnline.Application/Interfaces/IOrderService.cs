@@ -7,6 +7,6 @@ namespace eStoreOnline.Application.Interfaces;
 public interface IOrderService
 {
     Task CreateOrderAsync(CreateOrderRequestModel request);
-    Task<PaginatedModel<CartModel>> GetOrdersAsync(GetOrderRequestModel request);
-    Task<OrderDetailModel> GetOrderDetail(int orderId);
+    Task<PaginatedModel<OrderModel>> GetOrdersAsync(GetOrderRequestModel request);
+    Task<OrderDetailModel> GetOrderDetail(GetOrderDetailRequestModel request);
 }

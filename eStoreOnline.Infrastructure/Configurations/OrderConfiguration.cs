@@ -15,7 +15,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.Property(x => x.OrderDate).IsRequired();
         builder.Property(x => x.ShippingAddress).IsRequired().HasMaxLength(500);
         builder.Property(x => x.OrderStatus).IsRequired().HasMaxLength(50);
-        builder.Property(x => x.TotalPrice).HasColumnType("decimal(18,2)");
+        builder.Property(x => x.TotalAmount).HasColumnType("decimal(18,2)");
         builder.Property(x => x.UserId).IsRequired();
         builder.HasMany(x => x.OrderDetails).WithOne().HasForeignKey(x => x.OrderId);
     }

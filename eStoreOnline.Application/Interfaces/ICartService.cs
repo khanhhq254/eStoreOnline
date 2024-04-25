@@ -4,8 +4,8 @@ namespace eStoreOnline.Application.Interfaces;
 
 public interface ICartService
 {
-    Task AddItemToCartAsync(int productId, int quantity);
-    Task RemoveItemFromCartAsync(int productId);
+    Task AddItemToCartAsync(AddItemToCartModel model);
+    Task RemoveItemFromCartAsync(RemoveItemFromCartModel model);
     Task<CartModel> GetCartByUserAsync(CartRequestModel request);
     Task<CartModel> UpdateCartAsync(UpdateCartRequestModel request);
 }

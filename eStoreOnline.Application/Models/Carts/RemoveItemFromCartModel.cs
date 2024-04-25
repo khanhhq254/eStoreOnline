@@ -1,8 +1,8 @@
 namespace eStoreOnline.Application.Models.Carts;
 
-public class UpdateCartRequestModel
+public class RemoveItemFromCartModel
 {
     public int CartId { get; set; }
-    public List<UpdateCartDetailRequestModel> CartDetails { get; set; } = [];
     public int UserId { get; set; }
+    public int ProductId { get; set; }
 }
