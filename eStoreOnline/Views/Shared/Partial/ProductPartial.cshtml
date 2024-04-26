@@ -1,69 +1,37 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model eStoreOnline.Application.Models.Products.GetAllProductModel;
+
 <div class="item">
     <!-- product name -->
     <div class="product-name">
-        <a href="product-layout-1.html">Edna Dress</a>
+        <a href="/Product/@Model.UrlSlug">@Model.ProductName</a>
     </div>
     <!-- End product name -->
     <!-- start product image -->
     <div class="product-image">
         <!-- start product image -->
-        <a href="product-layout-1.html">
-            <!-- image -->
-            <img class="primary blur-up lazyload" data-src="/images/product-images/product-image1.jpg" src="/images/product-images/product-image1.jpg" alt="image" title="product">
-            <!-- End image -->
-            <!-- Hover image -->
-            <img class="hover blur-up lazyload" data-src="/images/product-images/product-image1-1.jpg" src="/images/product-images/product-image1-1.jpg" alt="image" title="product">
-            <!-- End hover image -->
-            <!-- product label -->
-            <div class="product-labels rounded">
-                <span class="lbl on-sale">Sale</span> <span class="lbl pr-label1">new</span>
-            </div>
-            <!-- End product label -->
+        <a href="/Product/@Model.UrlSlug">
+            <img class="primary blur-up lazyload" data-src="@Model.ImageUrl" src="@Model.ImageUrl" alt="image" title="product">
         </a>
         <!-- end product image -->
-
-        <!-- countdown start -->
-        <div class="saleTime desktop" data-countdown="2022/03/01"></div>
-        <!-- countdown end -->
     </div>
     <!-- end product image -->
     <!-- Start product button -->
     <div class="button-set button-style2">
         <form class="variants add btn-style2" action="#" method="post">
-            <button class="btn cartIcon btn-addto-cart" type="button" tabindex="0">
+            <button class="btn cartIcon btn-addto-cart" data-product-id="@Model.Id" type="button" tabindex="0">
                 <i class="icon anm anm-bag-l"></i>
             </button>
         </form>
-        <a href="javascript:void(0)" title="Quick View" class="btn-style2 quick-view-popup quick-view" data-toggle="modal" data-target="#content_quickview">
-            <i class="icon anm anm-search-plus-r"></i>
-        </a>
-        <div class="wishlist-btn btn-style2">
-            <a class="wishlist add-to-wishlist" href="wishlist.html">
-                <i class="icon anm anm-heart-l"></i>
-            </a>
-        </div>
-        <div class="compare-btn btn-style2">
-            <a class="compare add-to-compare" href="compare.html" title="Add to Compare">
-                <i class="icon anm anm-random-r"></i>
-            </a>
-        </div>
     </div>
     <!-- end product button -->
     <!--start product details -->
     <div class="product-details text-center">
         <!-- product price -->
         <div class="product-price">
-            <span class="old-price">$500.00</span>
-            <span class="price">$600.00</span>
-        </div>
-        <!-- End product price -->
-        <div class="product-review">
-            <i class="font-13 fa fa-star"></i>
-            <i class="font-13 fa fa-star"></i>
-            <i class="font-13 fa fa-star"></i>
-            <i class="font-13 fa fa-star"></i>
-            <i class="font-13 fa fa-star"></i>
+            <span class="price">$@Model.Price.ToString("0.00")</span>
         </div>
     </div>
     <!-- End product details -->
 </div>
+

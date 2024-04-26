@@ -17,6 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\eStoreOnline.Application\eStoreOnline.Application.csproj" />
       <ProjectReference Include="..\eStoreOnline.Infrastructure\eStoreOnline.Infrastructure.csproj" />
     </ItemGroup>
 

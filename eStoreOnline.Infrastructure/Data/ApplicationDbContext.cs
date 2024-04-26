@@ -1,4 +1,5 @@
 ﻿using eStoreOnline.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,5 +17,6 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<CartDetail> CartDetails { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderDetail> OrderDetails { get; set; }
+    public DbSet<IdentityUser> Users { get; set; }
     
 }

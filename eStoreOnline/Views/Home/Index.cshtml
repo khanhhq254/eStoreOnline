@@ -1,4 +1,6 @@
-﻿@{
+﻿@model eStoreOnline.Models.Home.HomeIndexViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -36,9 +38,9 @@
 </div>
 <div class="grid-products style3">
 <div class="productSlider">
-@foreach (var _ in Enumerable.Range(1, 10))
+@foreach (var item in Model.RecentProducts)
 {
-    @await Html.PartialAsync("Partial/ProductPartial");
+    @await Html.PartialAsync("Partial/ProductPartial", item);
 }
 </div>
 </div>
@@ -47,3 +49,29 @@
 </div>
 </div>
 <!--Collection Tab slider-->
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('.btn-addto-cart').click(function (e) {
+                let productId = $(this).data('product-id');
+                let quantity = 1;
+                let data = { productId: productId, quantity: quantity };
+                $.ajax({
+                    url: "/Cart/AddItemToCart",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(data),
+                    success: function (data) {
+                        if (data) {
+                            // reloadCart();
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            });
+        });
+    </script>
+}
