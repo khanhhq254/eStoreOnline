@@ -84,7 +84,7 @@ public class CartService : ICartService
     public async Task<CartModel> GetCartByUserAsync(CartRequestModel request)
     {
         var cart = await _context.Carts.Include(x => x.CartDetails).ThenInclude(cartDetail => cartDetail.Product)
-            .FirstOrDefaultAsync(x => x.Id == request.CartId && x.UserId == request.UserId);
+            .FirstOrDefaultAsync(x => x.UserId == request.UserId && !x.DeletedDate.HasValue);
 
         if (cart == null)
             return new CartModel();
@@ -106,7 +106,7 @@ public class CartService : ICartService
     public async Task<CartModel> UpdateCartAsync(UpdateCartRequestModel request)
     {
         var cart = await _context.Carts.Include(x => x.CartDetails).ThenInclude(cartDetail => cartDetail.Product)
-            .FirstOrDefaultAsync(x => x.Id == request.CartId && x.UserId == request.UserId);
+            .FirstOrDefaultAsync(x => x.Id == request.CartId && x.UserId == request.UserId && !x.DeletedDate.HasValue);
 
         if (cart == null)
             return new CartModel();
@@ -154,7 +154,6 @@ public class CartService : ICartService
 
         var result = await GetCartByUserAsync(new CartRequestModel()
         {
-            CartId = request.CartId,
             UserId = request.UserId
         });
 

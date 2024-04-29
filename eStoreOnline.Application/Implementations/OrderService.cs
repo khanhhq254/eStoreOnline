@@ -24,7 +24,7 @@ public class OrderService : IOrderService
         _paymentGatewayService = paymentGatewayService;
     }
 
-    public async Task CreateOrderAsync(CreateOrderRequestModel request)
+    public async Task<CreateOrderResponseModel> CreateOrderAsync(CreateOrderRequestModel request)
     {
         var cart = await _context.Carts
             .Include(x => x.CartDetails)
@@ -80,6 +80,13 @@ public class OrderService : IOrderService
         _context.Orders.Add(order);
 
         await _context.SaveChangesAsync();
+
+        return new CreateOrderResponseModel()
+        {
+            StripeSessionId = session.StripeSessionId,
+            OrderNumber = order.OrderNumber,
+            StripeSessionUrl = session.StripeSessionUrl
+        };
     }
 
     public async Task<PaginatedModel<OrderModel>> GetOrdersAsync(GetOrderRequestModel request)
@@ -102,19 +109,20 @@ public class OrderService : IOrderService
         return PaginatedModel<OrderModel>.Success(orderData, total, request.PageIndex, request.PageSize);
     }
 
-    public async Task<OrderDetailModel> GetOrderDetail(GetOrderDetailRequestModel request)
+    public async Task<OrderDetailModel> GetOrderDetailAsync(GetOrderDetailRequestModel request)
     {
         var order = await _context.Orders
             .Include(x => x.OrderDetails)
             .ThenInclude(x => x.Product)
             .Where(x => !string.IsNullOrWhiteSpace(request.UserId) && x.UserId == request.UserId)
-            .Where(x => x.Id == request.OrderId)
-            .Take(request.PageSize)
-            .Skip(request.PageIndex * request.PageSize)
+            .Where(x => (request.OrderId.HasValue && x.Id == request.OrderId) ||
+                        (!string.IsNullOrWhiteSpace(request.OrderNumber) && x.OrderNumber == request.OrderNumber))
             .FirstOrDefaultAsync();
 
+        var orderKey = request.OrderId.HasValue ? request.OrderId.ToString() : request.OrderNumber;
+
         if (order == null)
-            throw new NotFoundException(nameof(Order), request.OrderId);
+            throw new NotFoundException(nameof(Order), orderKey + "");
 
         return new OrderDetailModel()
         {
