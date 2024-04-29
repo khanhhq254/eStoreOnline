@@ -1,37 +1,39 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model eStoreOnline.Application.Models.Products.GetAllProductModel;
 
-<div class="item">
-    <!-- product name -->
-    <div class="product-name">
-        <a href="/Product/@Model.UrlSlug">@Model.ProductName</a>
-    </div>
-    <!-- End product name -->
-    <!-- start product image -->
-    <div class="product-image">
+<div class="col-6 col-sm-6 col-md-4 col-lg-3 grid-view-item style2 item">
+    <div class="grid-view_image">
         <!-- start product image -->
-        <a href="/Product/@Model.UrlSlug">
-            <img class="primary blur-up lazyload" data-src="@Model.ImageUrl" src="@Model.ImageUrl" alt="image" title="product">
+        <a href="/Product/Detail/@Model.UrlSlug" class="grid-view-item__link">
+            <img class="grid-view-item__image primary blur-up lazyload" data-src="@Model.ImageUrl" src="@Model.ImageUrl" alt="image" title="product"/>
+            <img class="grid-view-item__image hover blur-up lazyload" data-src="@Model.ImageUrl" src="@Model.ImageUrl" alt="image" title="product"/>
         </a>
         <!-- end product image -->
-    </div>
-    <!-- end product image -->
-    <!-- Start product button -->
-    <div class="button-set button-style2">
-        <form class="variants add btn-style2" action="#" method="post">
-            <button class="btn cartIcon btn-addto-cart" data-product-id="@Model.Id" type="button" tabindex="0">
-                <i class="icon anm anm-bag-l"></i>
-            </button>
-        </form>
-    </div>
-    <!-- end product button -->
-    <!--start product details -->
-    <div class="product-details text-center">
-        <!-- product price -->
-        <div class="product-price">
-            <span class="price">$@Model.Price.ToString("0.00")</span>
-        </div>
-    </div>
-    <!-- End product details -->
-</div>
 
+        <!--start product details -->
+        <div class="product-details hoverDetails text-center mobile">
+            <!-- product name -->
+            <div class="product-name">
+                <a href="#">@Model.ProductName</a>
+            </div>
+            <!-- End product name -->
+            <!-- product price -->
+            <div class="product-price">
+                <span class="price">$ $@Model.Price.ToString("0.00")</span>
+            </div>
+            <!-- End product price -->
+
+            <!-- product button -->
+            <div class="button-set">
+                <form action="#" method="post">
+                    <button class="btn btn--secondary cartIcon btn-addto-cart" type="button" data-product-id="@Model.Id">
+                        <i class="icon anm anm-bag-l"></i>
+                    </button>
+                </form>
+           
+            </div>
+            <!-- End product button -->
+        </div>
+        <!-- End product details -->
+    </div>
+</div>

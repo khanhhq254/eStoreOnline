@@ -22,8 +22,9 @@ public class ProductService : IProductService
         var count = await _context.Products.CountAsync(x => string.IsNullOrWhiteSpace(x.DeletedBy));
 
         var products = await _context.Products
-            .Take(request.PageSize)
+            .OrderByDescending(x => x.CreatedDate)
             .Skip(request.PageSize * request.PageIndex)
+            .Take(request.PageSize)
             .Where(x => string.IsNullOrWhiteSpace(x.DeletedBy))
             .Select(x => new GetAllProductModel
             {
@@ -38,6 +39,28 @@ public class ProductService : IProductService
         return PaginatedModel<GetAllProductModel>.Success(products, request.PageIndex, request.PageSize, count);
     }
 
+    public async Task<List<GetAllProductModel>> GetAllTopProductsAsync()
+    {
+        var count = await _context.Products.CountAsync(x => string.IsNullOrWhiteSpace(x.DeletedBy));
+
+        var products = await _context.Products
+            .Take(10)
+            .Skip(0)
+            .Where(x => string.IsNullOrWhiteSpace(x.DeletedBy))
+            .OrderByDescending(x => x.CreatedDate)
+            .Select(x => new GetAllProductModel
+            {
+                Id = x.Id,
+                ProductName = x.ProductName,
+                Description = x.Description,
+                ShortDescription = x.ShortDescription,
+                Price = x.Price,
+                ImageUrl = x.ImageUrl,
+            }).ToListAsync();
+
+        return products;
+    }
+
     public async Task<GetProductDetailModel> GetProductDetailAsync(string urlSlug)
     {
         var product = await _context.Products
@@ -50,6 +73,7 @@ public class ProductService : IProductService
                 ShortDescription = x.ShortDescription,
                 Price = x.Price,
                 ImageUrl = x.ImageUrl,
+                Sku = x.Sku
             }).FirstOrDefaultAsync();
         if (product == null)
             throw new NotFoundException(nameof(Product), urlSlug);

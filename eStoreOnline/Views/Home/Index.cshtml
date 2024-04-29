@@ -30,23 +30,36 @@
 
 <!--Collection Tab slider-->
 <div class="tab-slider-product section">
-<div class="container">
-<div class="row">
-<div class="col-12 col-sm-12 col-md-12 col-lg-12">
-<div class="section-header text-center">
-    <h2 class="h2 heading-font">New Products</h2>
-</div>
-<div class="grid-products style3">
-<div class="productSlider">
-@foreach (var item in Model.RecentProducts)
-{
-    @await Html.PartialAsync("Partial/ProductPartial", item);
-}
-</div>
-</div>
-</div>
-</div>
-</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="section-header text-center">
+                    <h2 class="h2 heading-font">New Products</h2>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <!--Main Content-->
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col">
+                            <div class="productList">
+                                <div class="grid-products grid--view-items">
+                                    <div class="row">
+                                        @foreach (var item in Model.RecentProducts)
+                                        {
+                                            @await Html.PartialAsync("Partial/ProductPartial", item)
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <!--End Main Content-->
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
 </div>
 <!--Collection Tab slider-->
 

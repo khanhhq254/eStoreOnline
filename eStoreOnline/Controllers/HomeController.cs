@@ -23,10 +23,10 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var result = await _productService.GetAllProductsAsync(new GetAllProductRequestModel());
+        var result = await _productService.GetAllTopProductsAsync();
         return View(new HomeIndexViewModel()
         {
-            RecentProducts = result.Data
+            RecentProducts = result
         });
     }
 

@@ -23,6 +23,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseExceptionHandler("/Home/Error");
     app.UseMigrationsEndPoint();
 }
 else
@@ -44,6 +45,16 @@ app.MapControllerRoute(
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}",
     defaults: new { area = "" }
 );
+
+app.MapControllerRoute(
+    name: "product-index",
+    pattern: "product/{pageIndex}",
+    defaults: new {controller = "Product", action = "Index"});
+
+app.MapControllerRoute(
+    name: "product-slug",
+    pattern: "product/detail/{urlSlug}",
+    defaults: new {controller = "Product", action = "Detail"});
 
 app.MapControllerRoute(
     name: "default",
