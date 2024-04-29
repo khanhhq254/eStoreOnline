@@ -5,14 +5,14 @@ namespace eStoreOnline.Controllers;
 
 public class BaseController : Controller
 {
-    protected readonly string? CurrentUserId;
-
-    public BaseController()
+    public string GetCurrentUserId()
     {
-        CurrentUserId = User.GetCurrentUserId();
-        if (string.IsNullOrWhiteSpace(CurrentUserId))
+        var currentUser = User.GetCurrentUserId();
+        if (string.IsNullOrWhiteSpace(currentUser))
         {
             throw new Exception("User not found");
         }
+
+        return currentUser;
     }
 }

@@ -1,7 +1,7 @@
 using eStoreOnline.Application.Interfaces;
 using eStoreOnline.Application.Models.Carts;
+using eStoreOnline.Models;
 using eStoreOnline.Application.Models.Orders;
-using eStoreOnline.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,44 +20,46 @@ public class CartController : BaseController
     }
 
     // GET
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var cart = await _cartService.GetCartByUserAsync(GetCurrentUserId());
+        return View(cart);
     }
 
     public async Task<IActionResult> AddItemToCart([FromBody] AddItemToCartModel request)
     {
+        request.UserId = GetCurrentUserId();
         await _cartService.AddItemToCartAsync(request);
-        return Json("Ok");
-    }
 
-    [HttpGet]
-    public async Task<JsonResult> GetCurrentCart()
-    {
-        var result = await _cartService.GetCartByUserAsync(new CartRequestModel()
-        {
-            UserId = CurrentUserId!
-        });
-
-        return Json(result);
+        return Ok(true);
     }
 
     [HttpPost]
-    public async Task<JsonResult>
-        RemoveItemFromCart(RemoveItemFromCartModel request)
+    public async Task<IActionResult> Update([FromBody] UpdateCartRequestModel request)
     {
-        request.UserId = CurrentUserId!;
+        request.UserId = GetCurrentUserId();
+        var result = await _cartService.UpdateCartAsync(request);
 
+        return Ok(ResponseModel<CartModel>.Success(result));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> RemoveItemFromCart(RemoveItemFromCartModel request)
+    {
+        request.UserId = GetCurrentUserId();
         await _cartService.RemoveItemFromCartAsync(request);
 
-        var result = await _cartService.GetCartByUserAsync(new CartRequestModel()
-        {
-            UserId = CurrentUserId!
-        });
-
-        return Json(result);
+        return Ok(ResponseModel.Success());
     }
-    
+
+    [HttpGet]
+    public async Task<IActionResult> GetCurrentCart()
+    {
+        var cart = await _cartService.GetCartByUserAsync(GetCurrentUserId());
+
+        return Ok(ResponseModel<CartModel>.Success(cart));
+    }
+
     [HttpPost]
     public async Task<JsonResult> CheckOut(int cartId)
     {
@@ -65,9 +67,9 @@ public class CartController : BaseController
         {
             Domain = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.Value,
             CartId = cartId,
-            UserId = CurrentUserId!
+            UserId = GetCurrentUserId()
         });
-        
+
         return Json("OK");
     }
 }

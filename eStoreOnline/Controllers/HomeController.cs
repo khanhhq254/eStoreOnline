@@ -4,18 +4,21 @@ using eStoreOnline.Application.Models.Products;
 using Microsoft.AspNetCore.Mvc;
 using eStoreOnline.Models;
 using eStoreOnline.Models.Home;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 
 namespace eStoreOnline.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
     private readonly IProductService _productService;
+    private readonly SignInManager<IdentityUser> _signInManager;
 
-    public HomeController(ILogger<HomeController> logger, IProductService productService)
+    public HomeController(IProductService productService, SignInManager<IdentityUser> signInManager)
     {
-        _logger = logger;
         _productService = productService;
+        _signInManager = signInManager;
     }
 
     public async Task<IActionResult> Index()
@@ -25,6 +28,14 @@ public class HomeController : Controller
         {
             RecentProducts = result.Data
         });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Logout()
+    {
+        await _signInManager.SignOutAsync();
+        
+        return Ok();
     }
 
     public IActionResult Privacy()

@@ -1,6 +1,5 @@
 using eStoreOnline.Application.Interfaces;
 using eStoreOnline.Application.Models.Orders;
-using eStoreOnline.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +21,7 @@ public class OrderController : BaseController
         {
             PageIndex = pageIndex - 1,
             PageSize = 20,
-            UserId = CurrentUserId
+            UserId = GetCurrentUserId()
         });
 
         return View(result);
@@ -33,7 +32,7 @@ public class OrderController : BaseController
         var result = await _orderService.GetOrderDetailAsync(new GetOrderDetailRequestModel()
         {
             OrderNumber = orderNumber,
-            UserId = CurrentUserId,
+            UserId = GetCurrentUserId(),
         });
 
         return View(result);

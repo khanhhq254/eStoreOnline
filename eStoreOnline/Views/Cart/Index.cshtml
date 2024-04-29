@@ -1,3 +1,5 @@
+@using eStoreOnline.Infrastructure.Extensions
+@model eStoreOnline.Application.Models.Carts.CartModel
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -15,8 +17,9 @@
 <div class="container">
     <div class="row">
         <div class="col-12 col-sm-12 col-md-8 col-lg-8 main-col">
-            <form action="#" method="post" class="cart style2">
-                <table>
+            @if (Model.CartDetail.Count > 0)
+            {
+                <table class="table-cart">
                     <thead class="cart__row cart__header">
                     <tr>
                         <th colspan="2" class="text-center">Product</th>
@@ -27,82 +30,49 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="cart__row border-bottom line1 cart-flex border-top">
-                        <td class="cart__image-wrapper cart-flex-item">
-                            <a href="#">
-                                <img class="cart__image" src="/images/product-images/product-image3.jpg" alt="3/4 Sleeve Kimono Dress">
-                            </a>
-                        </td>
-                        <td class="cart__meta small--text-left cart-flex-item">
-                            <div class="list-view-item__title">
-                                <a href="#">3/4 Sleeve Kimono Dress</a>
-                            </div>
-                        </td>
-                        <td class="cart__price-wrapper cart-flex-item">
-                            <span class="money">$735.00</span>
-                        </td>
-                        <td class="cart__update-wrapper cart-flex-item text-right">
-                            <div class="cart__qty text-center">
-                                <div class="qtyField">
-                                    <a class="qtyBtn minus" href="javascript:void(0);">
-                                        <i class="icon icon-minus"></i>
-                                    </a>
-                                    <input class="cart__qty-input qty" type="text" name="updates[]" id="qty" value="1" pattern="[0-9]*">
-                                    <a class="qtyBtn plus" href="javascript:void(0);">
-                                        <i class="icon icon-plus"></i>
-                                    </a>
+                    @foreach (var item in Model.CartDetail)
+                    {
+                        <tr class="cart__row border-bottom line1 cart-flex border-top">
+                            <td class="cart__image-wrapper cart-flex-item">
+                                <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.ProductId">
+                                    <img class="cart__image" src="@item.ImageUrl" alt="@item.ProductName">
+                                </a>
+                            </td>
+                            <td class="cart__meta small--text-left cart-flex-item">
+                                <div class="list-view-item__title">
+                                    <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.ProductId">@item.ProductName</a>
                                 </div>
-                            </div>
-                        </td>
-                        <td class="text-right small--hide cart-price">
-                            <div>
-                                <span class="money">$735.00</span>
-                            </div>
-                        </td>
-                        <td class="text-center small--hide">
-                            <a href="#" class="btn btn--secondary cart__remove" title="Remove tem">
-                                <i class="icon icon anm anm-times-l"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr class="cart__row border-bottom line1 cart-flex border-top">
-                        <td class="cart__image-wrapper cart-flex-item">
-                            <a href="#">
-                                <img class="cart__image" src="/images/product-images/product-image6.jpg" alt="Minerva Dress black">
-                            </a>
-                        </td>
-                        <td class="cart__meta small--text-left cart-flex-item">
-                            <div class="list-view-item__title">
-                                <a href="#">Minerva Dress black</a>
-                            </div>
-                        </td>
-                        <td class="cart__price-wrapper cart-flex-item">
-                            <span class="money">$526.00</span>
-                        </td>
-                        <td class="cart__update-wrapper cart-flex-item text-right">
-                            <div class="cart__qty text-center">
-                                <div class="qtyField">
-                                    <a class="qtyBtn minus" href="javascript:void(0);">
-                                        <i class="icon icon-minus"></i>
-                                    </a>
-                                    <input class="cart__qty-input qty" type="text" name="updates[]" id="qty" value="1" pattern="[0-9]*">
-                                    <a class="qtyBtn plus" href="javascript:void(0);">
-                                        <i class="icon icon-plus"></i>
-                                    </a>
+                            </td>
+                            <td class="cart__price-wrapper cart-flex-item">
+                                <span class="money">$@item.Price.ToMoney()</span>
+                                <input type="text" name="price" value="@item.Price" hidden>
+                            </td>
+                            <td class="cart__update-wrapper cart-flex-item text-right">
+                                <div class="cart__qty text-center">
+                                    <div class="qtyField">
+                                        <a class="qtyBtn minus" href="javascript:void(0);">
+                                            <i class="icon icon-minus"></i>
+                                        </a>
+                                        <input class="cart__qty-input qty" type="number" name="quantity" value="@item.Quantity">
+                                        <input type="text" name="productId" value="@item.ProductId" hidden>
+                                        <a class="qtyBtn plus" href="javascript:void(0);">
+                                            <i class="icon icon-plus"></i>
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td class="text-right small--hide cart-price">
-                            <div>
-                                <span class="money">$735.00</span>
-                            </div>
-                        </td>
-                        <td class="text-center small--hide">
-                            <a href="#" class="btn btn--secondary cart__remove" title="Remove tem">
-                                <i class="icon icon anm anm-times-l"></i>
-                            </a>
-                        </td>
-                    </tr>
+                            </td>
+                            <td class="text-right small--hide cart-price">
+                                <div>
+                                    <span class="money total-col">$@item.Amount.ToMoney()</span>
+                                </div>
+                            </td>
+                            <td class="text-center small--hide remove-col">
+                                <button class="btn btn--secondary cart__remove" title="Remove tem">
+                                    <i class="icon icon anm anm-times-l"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
                     </tbody>
                     <tfoot>
                     <tr>
@@ -110,26 +80,25 @@
                             <a asp-controller="Home" asp-action="Index" class="btn--link cart-continue"><i class="icon icon-arrow-circle-left"></i> Continue shopping</a>
                         </td>
                         <td colspan="3" class="text-right">
-                            <button type="submit" name="update" class="btn--link cart-update"><i class="fa fa-refresh"></i> Update</button>
+                            <button onclick="updateCart()" class="btn--link cart-update"><i class="fa fa-refresh"></i> Update</button>
                         </td>
                     </tr>
                     </tfoot>
                 </table>
+            }
 
-                <div class="currencymsg">We processes all orders in USD. While the content of your cart is currently displayed in USD, the checkout will use USD at the most current exchange rate.</div>
-                <hr>
-
-            </form>
+            <div class="currencymsg">We processes all orders in USD. While the content of your cart is currently displayed in USD, the checkout will use USD at the most current exchange rate.</div>
+            <hr>
         </div>
         <div class="col-12 col-sm-12 col-md-4 col-lg-4 cart__footer">
-            <form action="#" method="post" class="cart style2">
+            <form asp-controller="Cart" asp-action="CheckOut" method="post" class="cart style2">
                 <div class="solid-border">
                     <div class="row">
                         <span class="col-6 cart__subtotal-title">
                             <strong>Subtotal</strong>
                         </span>
                         <span class="col-6 cart__subtotal-title cart__subtotal text-right">
-                            <span class="money">$735.00</span>
+                            <span class="money">$@Model.TotalAmount.ToMoney()</span>
                         </span>
                     </div>
                     <div class="row mt-2">
@@ -147,3 +116,71 @@
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script>
+        function checkoutCart(cartId) {
+            $.ajax({
+                url: '/Cart/CheckOut?cartId=@Model.CartId',
+                type: 'POST',
+                data: {cartId: cartId},
+                success: function (response) {
+                    if (response) {
+                        window.location.href = '/Cart/CheckOut';
+                    }
+                }
+            });
+        }
+        
+        function isCartEmpty() {
+            return $('.table-cart tr').length === 0;
+        }
+        
+        $('.remove-col .cart__remove').click(function () {
+            $(this).closest('tr').remove();
+            if (isCartEmpty()) {
+            debugger;
+                $('#cartCheckout').disable();
+            }
+        });
+
+        $('.qty').change(function () {
+            const price = $(this).parent().parent().parent().parent().find('[name="price"]').val();
+            const quantity = $(this).val();
+            const total = parseFloat(price) * parseFloat(quantity);
+            $(this).closest('tr').find('.total-col').text(`$${total.toFixed(2)}`);
+        });
+        
+        function updateCart() {
+            const cartItems = [];
+            
+            $('.table-cart tr').map(function (){
+                const cartItemElement = $(this).find('.qtyField input');
+                if (cartItemElement.length > 0) {
+                    const productId = cartItemElement.filter('[name="productId"]').val();
+                    const quantity = Number(cartItemElement.filter('[name="quantity"]').val());
+                    cartItems.push({productId, quantity});
+                }
+            });
+            
+            $.ajax({
+                url: '/Cart/Update',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({cartDetails: cartItems}),
+                success: function (response) {
+                    if (response) {
+                        window.location.reload();
+                    }
+                }
+            });
+        }
+        
+        $(document).ready(function (){
+            if (@Model.CartDetail.Count === 0) {
+                $('#cartCheckout').disable();
+            }
+        });
+    </script>
+}

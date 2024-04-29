@@ -6,6 +6,6 @@ public interface ICartService
 {
     Task AddItemToCartAsync(AddItemToCartModel model);
     Task RemoveItemFromCartAsync(RemoveItemFromCartModel model);
-    Task<CartModel> GetCartByUserAsync(CartRequestModel request);
+    Task<CartModel> GetCartByUserAsync(string userId);
     Task<CartModel> UpdateCartAsync(UpdateCartRequestModel request);
 }
