@@ -20,7 +20,7 @@ public class OrderController : BaseController
         var result = await _orderService.GetOrdersAsync(new GetOrderRequestModel()
         {
             PageIndex = pageIndex - 1,
-            PageSize = 20,
+            PageSize = 10,
             UserId = GetCurrentUserId()
         });
 

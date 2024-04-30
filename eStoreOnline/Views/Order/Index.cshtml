@@ -1,7 +1,105 @@
+@using eStoreOnline.Infrastructure.Extensions
 @model eStoreOnline.Application.Models.PaginatedModel<eStoreOnline.Application.Models.Orders.OrderModel>
 
 @{
     ViewBag.Title = "Orders";
 }
 
-<h2>title</h2>
+<h2>Order History</h2>
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        @if (Model.Data.Count > 0)
+        {
+            <div>You don't have any orders yet.</div>
+        }
+        else
+        {
+            <div class="col-12 col-sm-12 col-md-8 col-lg-8 main-col">
+
+                <table class="table-cart">
+                    <thead class="cart__row cart__header">
+                    <tr>
+                        <th class="text-center">Order Number</th>
+                        <th class="text-center">Total Price</th>
+                        <th class="text-center">Order Date</th>
+                        <th class="text-right">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model.Data)
+                    {
+                        <tr class="cart__row border-bottom line1 cart-flex border-top">
+                            <td class="cart__meta small--text-left cart-flex-item">
+                                <div class="list-view-item__title">
+                                    @item.OrderNumber
+                                </div>
+                            </td>
+
+                            <td class="cart__update-wrapper cart-flex-item text-right">
+                                <div class="cart__qty text-center">
+                                    <span class="money">$@item.TotalPrice.ToMoney()</span>
+                                </div>
+                            </td>
+                            <td class="text-right small--hide cart-price">
+                                <div>
+                                    <span class="money total-col">$@item.OrderDate.ToString("dd MMM yyyy")</span>
+                                </div>
+                            </td>
+                            <td class="text-right small--hide cart-price">
+                                <div>
+                                    <span class="total-col">$@item.OrderStatus</span>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row justify-content-center">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        @if (Model.PageIndex > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link p-0" href="/Order/@(Model.PageIndex - 1)">&lt;</a>
+                            </li>
+                        }
+                        @foreach (var item in Model.Pages)
+                        {
+                            if (item == "...")
+                            {
+                                <li class="page-item">
+                                    <a class="page-link p-0" href="#">@item</a>
+                                </li>
+                            }
+                            else
+                            {
+                                @if (item == @Model.PageIndex.ToString())
+                                {
+                                    <li class="page-item active">
+                                        <a class="page-link p-0" href="/Order/@item">@item</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link p-0" href="/Order/@item">@item</a>
+                                    </li>
+                                }
+                            }
+                        }
+                        @if (Model.PageIndex < Model.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a class="page-link p-0" href="/Order/@(Model.PageIndex + 1)">&gt;</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+        }
+
+    </div>
+</div>

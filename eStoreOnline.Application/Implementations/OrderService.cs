@@ -92,8 +92,11 @@ public class OrderService : IOrderService
     public async Task<PaginatedModel<OrderModel>> GetOrdersAsync(GetOrderRequestModel request)
     {
         var orders = await _context.Orders
+            .OrderByDescending(x => x.OrderDate)
+            .Skip(request.PageIndex * request.PageSize)
+            .Take(request.PageSize)
             .Where(x => !string.IsNullOrWhiteSpace(request.UserId) && x.UserId == request.UserId)
-            .Take(request.PageSize).Skip(request.PageIndex * request.PageSize).ToListAsync();
+            .ToListAsync();
 
         var total = await _context.Orders.CountAsync(x =>
             !string.IsNullOrWhiteSpace(request.UserId) && x.UserId == request.UserId);
@@ -104,6 +107,7 @@ public class OrderService : IOrderService
             OrderNumber = x.OrderNumber,
             TotalPrice = x.TotalAmount,
             OrderDate = x.OrderDate,
+            OrderStatus = x.OrderStatus
         }).ToList();
 
         return PaginatedModel<OrderModel>.Success(orderData, total, request.PageIndex, request.PageSize);

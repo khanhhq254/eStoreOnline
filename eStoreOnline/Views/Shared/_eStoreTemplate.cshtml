@@ -27,236 +27,210 @@
     <img src="/images/loader.gif" alt="Loading..."/>
 </div>
 <div class="pageWrapper">
-<div class="layout-boxed">
-<!--Search Form Drawer-->
-<div class="search">
-    <div class="search__form">
-        <form class="search-bar__form" action="#">
-            <button class="go-btn search__button" type="submit">
-                <i class="icon anm anm-search-l"></i>
-            </button>
-            <input class="search__input" type="search" name="q" value="" placeholder="Search entire store..." aria-label="Search" autocomplete="off">
-        </form>
-        <button type="button" class="search-trigger close-btn">
-            <i class="anm anm-times-l"></i>
-        </button>
-    </div>
-</div>
-<!--End Search Form Drawer-->
-<!--Top Header-->
-<div class="top-header">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12 text-right">
-                <span class="user-menu d-block d-lg-none">
-                    <i class="anm anm-user-al" aria-hidden="true"></i>
-                </span>
-                <ul class="customer-links list-inline">
-                    @if (User.Identity?.IsAuthenticated ?? false)
-                    {
-                        <li>
-                            <div class="language-dropdown">
-                                <span class="language-dd">Hello: @User.Identity.Name</span>
-                                <ul id="language">
-                                    <li class="">User Profile</li>
-                                    <li class="" onclick="logout()">Logout</li>
-                                </ul>
-                            </div>
-                        </li>
-                    }
-                    else
-                    {
-                        <li>
-                            <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Context.Request.Path">Login</a>
-                        </li>
-                        <li>
-                            <a asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@Context.Request.Path">Create Account</a>
-                        </li>
-                    }
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-<!--End Top Header-->
-<!--Header-->
-<div class="header-wrap animated d-flex">
-    <div class="container-fluid">
-        <div class="row align-items-center">
-            <!--Desktop Logo-->
-            <div class="logo col-md-2 col-lg-2 d-none d-lg-block">
-                <a asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="/images/logo.svg" alt="@ViewBag.Title" title="@ViewBag.Title"/>
-                </a>
-            </div>
-            <!--End Desktop Logo-->
-            <div class="col-2 col-sm-3 col-md-3 col-lg-8">
-                <div class="d-block d-lg-none">
-                    <button type="button" class="btn--link site-header__menu js-mobile-nav-toggle mobile-nav--open">
-                        <i class="icon anm anm-times-l"></i>
-                        <i class="anm anm-bars-r"></i>
-                    </button>
-                </div>
-                <!--Desktop Menu-->
-                <nav class="grid__item" id="AccessibleNav">
-                    <!-- for mobile -->
-                    <ul id="siteNav" class="site-nav medium center hidearrow">
-                        <li class="lvl1">
-                            <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="lvl1">
-                            <a asp-area="" asp-controller="Product" asp-action="Index">Product</a>
-                        </li>
-                    </ul>
-                </nav>
-                <!--End Desktop Menu-->
-            </div>
-            <!--Mobile Logo-->
-            <div class="col-6 col-sm-6 col-md-6 col-lg-2 d-block d-lg-none mobile-logo">
-                <div class="logo">
-                    <a asp-area="" asp-controller="Home" asp-action="Index">
-                        <img src="/images/logo.svg" alt="Belle Multipurpose Html Template" title="Belle Multipurpose Html Template"/>
-                    </a>
-                </div>
-            </div>
-            <!--Mobile Logo-->
-            <div class="col-4 col-sm-3 col-md-3 col-lg-2">
-                <div class="site-cart">
-                    <a href="#" class="site-header__cart" title="Cart">
-                        <i class="icon anm anm-bag-l"></i>
-                        <span id="CartCount" class="site-header__cart-count" data-cart-render="item_count"></span>
-                    </a>
-                    <!--Minicart Popup-->
-                    <div id="header-cart" class="block block-cart">
-                    </div>
-                    <!--End Minicart Popup-->
-                </div>
-                <div class="site-header__search">
-                    <button type="button" class="search-trigger">
+    <div class="layout-boxed">
+        <!--Search Form Drawer-->
+        <div class="search">
+            <div class="search__form">
+                <form class="search-bar__form" action="#">
+                    <button class="go-btn search__button" type="submit">
                         <i class="icon anm anm-search-l"></i>
                     </button>
-                </div>
+                    <input class="search__input" type="search" name="q" value="" placeholder="Search entire store..." aria-label="Search" autocomplete="off">
+                </form>
+                <button type="button" class="search-trigger close-btn">
+                    <i class="anm anm-times-l"></i>
+                </button>
             </div>
         </div>
-    </div>
-</div>
-<!--End Header-->
-<!--Mobile Menu-->
-<div class="mobile-nav-wrapper" role="navigation">
-    <div class="closemobileMenu"><i class="icon anm anm-times-l pull-right"></i> Close Menu</div>
-    <ul id="MobileNav" class="mobile-nav">
-        <li class="lvl1">
-            <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-        </li>
-        <li class="lvl1">
-            <a asp-area="" asp-controller="Product" asp-action="Index">Products</a>
-        </li>
-    </ul>
-</div>
-<!--End Mobile Menu-->
-
-<!--Body Content-->
-<div id="page-content">
-
-    @RenderBody()
-
-</div>
-<!--End Body Content-->
-
-<!--Footer-->
-<footer id="footer" class="footer-4">
-    <div class="site-footer">
-        <div class="container">
-            <!--Footer Links-->
-            <div class="footer-top">
+        <!--End Search Form Drawer-->
+        <!--Top Header-->
+        <div class="top-header">
+            <div class="container-fluid">
                 <div class="row">
-                    <div class="col-12 col-sm-12 col-md-3 col-lg-3 footer-links">
-                        <h4 class="h4">Quick Shop</h4>
-                        <ul>
-                            <li>
-                                <a href="#">Women</a>
-                            </li>
-                            <li>
-                                <a href="#">Men</a>
-                            </li>
-                            <li>
-                                <a href="#">Kids</a>
-                            </li>
-                            <li>
-                                <a href="#">Sportswear</a>
-                            </li>
-                            <li>
-                                <a href="#">Sale</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-3 col-lg-3 footer-links">
-                        <h4 class="h4">Informations</h4>
-                        <ul>
-                            <li>
-                                <a href="#">About us</a>
-                            </li>
-                            <li>
-                                <a href="#">Careers</a>
-                            </li>
-                            <li>
-                                <a href="#">Privacy policy</a>
-                            </li>
-                            <li>
-                                <a href="#">Terms &amp; condition</a>
-                            </li>
-                            <li>
-                                <a href="#">My Account</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-3 col-lg-3 footer-links">
-                        <h4 class="h4">User Management</h4>
-                        <ul>
-                            <li>
-                                <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Context.Request.Path">Login</a>
-                            </li>
-                            <li>
-                                <a asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@Context.Request.Path">Register</a>
-                            </li>
-                            <li>
-                                <a href="#">Change Password</a>
-                            </li>
-                            <li>
-                                <a href="#">User Profile</a>
-                            </li>
+                    <div class="col-12 text-right">
+                        <span class="user-menu d-block d-lg-none">
+                            <i class="anm anm-user-al" aria-hidden="true"></i>
+                        </span>
+                        <ul class="customer-links list-inline">
+                            @if (User.Identity?.IsAuthenticated ?? false)
+                            {
+                                <li>
+                                    <div class="language-dropdown">
+                                        <span class="language-dd">Hello: @User.Identity.Name</span>
+                                        <ul id="language">
+                                            <li class="">User Profile</li>
+                                            <li class="" onclick="logout()">Logout</li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Context.Request.Path">Login</a>
+                                </li>
+                                <li>
+                                    <a asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@Context.Request.Path">Create Account</a>
+                                </li>
+                            }
                         </ul>
                     </div>
                 </div>
             </div>
-            <!--End Footer Links-->
         </div>
-    </div>
-</footer>
-<!--End Footer-->
-</div><!--End layout-boxed-->
-<!--Scoll Top-->
-<span id="site-scroll">
-    <i class="icon anm anm-angle-up-r"></i>
-</span>
-<!--End Scoll Top-->
+        <!--End Top Header-->
+        <!--Header-->
+        <div class="header-wrap animated d-flex">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <!--Desktop Logo-->
+                    <div class="logo col-md-2 col-lg-2 d-none d-lg-block">
+                        <a asp-area="" asp-controller="Home" asp-action="Index">
+                            <img src="/images/logo.svg" alt="@ViewBag.Title" title="@ViewBag.Title"/>
+                        </a>
+                    </div>
+                    <!--End Desktop Logo-->
+                    <div class="col-2 col-sm-3 col-md-3 col-lg-8">
+                        <div class="d-block d-lg-none">
+                            <button type="button" class="btn--link site-header__menu js-mobile-nav-toggle mobile-nav--open">
+                                <i class="icon anm anm-times-l"></i>
+                                <i class="anm anm-bars-r"></i>
+                            </button>
+                        </div>
+                        <!--Desktop Menu-->
+                        <nav class="grid__item" id="AccessibleNav">
+                            <!-- for mobile -->
+                            <ul id="siteNav" class="site-nav medium center hidearrow">
+                                <li class="lvl1">
+                                    <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                </li>
+                                <li class="lvl1">
+                                    <a asp-area="" asp-controller="Product" asp-action="Index">Product</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <!--End Desktop Menu-->
+                    </div>
+                    <!--Mobile Logo-->
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-2 d-block d-lg-none mobile-logo">
+                        <div class="logo">
+                            <a asp-area="" asp-controller="Home" asp-action="Index">
+                                <img src="/images/logo.svg" alt="Belle Multipurpose Html Template" title="Belle Multipurpose Html Template"/>
+                            </a>
+                        </div>
+                    </div>
+                    <!--Mobile Logo-->
+                    <div class="col-4 col-sm-3 col-md-3 col-lg-2">
+                        <div class="site-cart">
+                            <a href="#" class="site-header__cart" title="Cart">
+                                <i class="icon anm anm-bag-l"></i>
+                                <span id="CartCount" class="site-header__cart-count" data-cart-render="item_count"></span>
+                            </a>
+                            <!--Minicart Popup-->
+                            <div id="header-cart" class="block block-cart">
+                            </div>
+                            <!--End Minicart Popup-->
+                        </div>
+                        <div class="site-header__search">
+                            <button type="button" class="search-trigger">
+                                <i class="icon anm anm-search-l"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End Header-->
+        <!--Mobile Menu-->
+        <div class="mobile-nav-wrapper" role="navigation">
+            <div class="closemobileMenu"><i class="icon anm anm-times-l pull-right"></i> Close Menu</div>
+            <ul id="MobileNav" class="mobile-nav">
+                <li class="lvl1">
+                    <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                </li>
+                <li class="lvl1">
+                    <a asp-area="" asp-controller="Product" asp-action="Index">Products</a>
+                </li>
+            </ul>
+        </div>
+        <!--End Mobile Menu-->
 
-<!-- Including Jquery -->
-<script src="/js/vendor/jquery-3.3.1.min.js"></script>
-<script src="/js/vendor/modernizr-3.6.0.min.js"></script>
-<script src="/js/vendor/jquery.cookie.js"></script>
-<script src="/js/vendor/wow.min.js"></script>
-<script src="/js/vendor/instagram-feed.js"></script>
-<!-- Including Javascript -->
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/plugins.js"></script>
-<script src="/js/popper.min.js"></script>
-<script src="/js/lazysizes.js"></script>
-<script type="text/javascript" src="js/toastify-js.js"></script>
-<script src="/js/main.js"></script>
-@await RenderSectionAsync("Scripts", false)
-<!--For Newsletter Popup-->
-<script>
+        <!--Body Content-->
+        <div id="page-content">
+
+            @RenderBody()
+
+        </div>
+        <!--End Body Content-->
+
+        <!--Footer-->
+        <footer id="footer" class="footer-4">
+            <div class="site-footer">
+                <div class="container">
+                    <!--Footer Links-->
+                    <div class="footer-top">
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-3 col-lg-3 footer-links">
+                                @if (User.Identity?.IsAuthenticated ?? false)
+                                {
+                                    <h4 class="h4">@User.Identity.Name</h4>
+                                    <ul>
+                                        <li>
+                                            <a href="/Order/1">Order History</a>
+                                        </li>
+                                        <li>
+                                            <a asp-controller="Home" asp-action="Logout">Logout</a>
+                                        </li>
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <ul>
+                                        <li>
+                                            <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Context.Request.Path">Login</a>
+                                        </li>
+                                        <li>
+                                            <a asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@Context.Request.Path">Register</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Change Password</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">User Profile</a>
+                                        </li>
+                                    </ul>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <!--End Footer Links-->
+                </div>
+            </div>
+        </footer>
+        <!--End Footer-->
+    </div><!--End layout-boxed-->
+    <!--Scoll Top-->
+    <span id="site-scroll">
+        <i class="icon anm anm-angle-up-r"></i>
+    </span>
+    <!--End Scoll Top-->
+
+    <!-- Including Jquery -->
+    <script src="/js/vendor/jquery-3.3.1.min.js"></script>
+    <script src="/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="/js/vendor/jquery.cookie.js"></script>
+    <script src="/js/vendor/wow.min.js"></script>
+    <script src="/js/vendor/instagram-feed.js"></script>
+    <!-- Including Javascript -->
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/plugins.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/lazysizes.js"></script>
+    <script type="text/javascript" src="js/toastify-js.js"></script>
+    <script src="/js/main.js"></script>
+    @await RenderSectionAsync("Scripts", false)
+    <!--For Newsletter Popup-->
+    <script>
         jQuery(document).ready(function(){
             jQuery('.closepopup').on('click', function () {
                 jQuery('#popup-container').fadeOut();
@@ -300,7 +274,7 @@
             });
         }
     </script>
-<!--End For Newsletter Popup-->
+    <!--End For Newsletter Popup-->
 </div>
 </body>
 
