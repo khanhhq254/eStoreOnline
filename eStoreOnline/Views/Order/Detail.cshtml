@@ -23,13 +23,13 @@
                 @if (Model.OrderItems.Count > 0)
                 {
                     <table class="table table-cart table-mobile">
-                        <thead>
+                        <thead class="thead-dark">
                         <tr>
                             <th>Product Name</th>
                             <th>Image</th>
                             <th>SKU</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
+                            <th class="text-right">Price</th>
+                            <th class="text-right">Quantity</th>
                         </tr>
                         </thead>
 
@@ -48,8 +48,8 @@
                                     </figure>
                                 </td>
                                 <td class="order-date-col">@item.Sku</td>
-                                <td class="status-col">$ @item.Price.ToMoney()</td>
-                                <td class="price-col">@item.Quantity</td>
+                                <td class="text-right">$ @item.Price.ToMoney()</td>
+                                <td class="text-right">@item.Quantity</td>
                             </tr>
                         }
                         </tbody>

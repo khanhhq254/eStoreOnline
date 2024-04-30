@@ -8,7 +8,7 @@ public static class HtmlExtensions
     {
         return status switch
         {
-            OrderStatus.Pending => "bg-gray text-light",
+            OrderStatus.Pending => "bg-gray",
             OrderStatus.Completed => "bg-primary text-light",
             OrderStatus.Cancelled => "bg-warning",
             _ => throw new ArgumentOutOfRangeException(nameof(status), status, null)

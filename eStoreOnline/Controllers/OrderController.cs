@@ -38,6 +38,7 @@ public class OrderController : BaseController
         return View(result);
     }
     
+    [AllowAnonymous]
     [HttpPost]
     public async Task<bool> ProcessingOrder()
     {
