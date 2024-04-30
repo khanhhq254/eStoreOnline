@@ -78,6 +78,10 @@
                     success: function (data) {
                         if (data) {
                             reloadCart();
+                            Toastify({
+                                text: "Add item to cart successfully!",
+                                duration: 3000,
+                            }).showToast();
                         }
                     },
                     error: function (error) {

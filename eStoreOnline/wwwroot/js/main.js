@@ -56,6 +56,25 @@
     // Start of use strict
     'use strict';
 
+    const $loading = $('#loading').hide();
+    
+    $(document)
+        .ajaxStart(function () {
+            $loading.show();
+        })
+        .ajaxStop(function () {
+            $loading.hide();
+        })
+        .ajaxError(function(err){
+            Toastify({
+                text: "Something went wrong! Please contact our administrator.",
+                duration: 3000,
+                style: {
+                    background: "linear-gradient(to right, #8B0000, #FF4500)",
+                }
+            }).showToast();
+        });
+    
     /*-----------------------------------------
 	  1. Preloader Loading ----------------------- 
 	  -----------------------------------------*/
