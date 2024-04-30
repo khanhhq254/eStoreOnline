@@ -120,7 +120,7 @@ public class OrderService : IOrderService
             OrderStatus = x.OrderStatus
         }).ToList();
 
-        return PaginatedModel<OrderModel>.Success(orderData, total, request.PageIndex, request.PageSize);
+        return PaginatedModel<OrderModel>.Success(orderData, request.PageIndex, request.PageSize, total);
     }
 
     public async Task<OrderDetailModel> GetOrderDetailAsync(GetOrderDetailRequestModel request)

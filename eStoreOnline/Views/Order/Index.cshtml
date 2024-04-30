@@ -64,7 +64,7 @@
                         @if (Model.PageIndex > 1)
                         {
                             <li class="page-item">
-                                <a class="page-link p-0" href="/Order/@(Model.PageIndex - 1)">&lt;</a>
+                                <a class="page-link p-0" href="/Order?pageIndex=@(Model.PageIndex - 1)">&lt;</a>
                             </li>
                         }
                         @foreach (var item in Model.Pages)
@@ -77,16 +77,16 @@
                             }
                             else
                             {
-                                @if (item == @Model.PageIndex.ToString())
+                                @if (item == (Model.PageIndex + 1).ToString())
                                 {
                                     <li class="page-item active">
-                                        <a class="page-link p-0" href="/Order/@item">@item</a>
+                                        <a class="page-link p-0" href="#">@item</a>
                                     </li>
                                 }
                                 else
                                 {
                                     <li class="page-item">
-                                        <a class="page-link p-0" href="/Order/@item">@item</a>
+                                        <a class="page-link p-0" href="/Order?pageIndex=@item">@item</a>
                                     </li>
                                 }
                             }

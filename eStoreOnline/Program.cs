@@ -45,6 +45,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
@@ -57,11 +58,6 @@ app.MapControllerRoute(
     name: "product-index",
     pattern: "product/{pageIndex}",
     defaults: new { controller = "Product", action = "Index" });
-
-app.MapControllerRoute(
-    name: "order-index",
-    pattern: "order/{pageIndex}",
-    defaults: new {controller = "Order", action = "Index"});
 
 app.MapControllerRoute(
     name: "product-slug",
