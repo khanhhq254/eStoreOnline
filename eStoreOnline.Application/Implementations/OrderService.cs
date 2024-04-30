@@ -10,6 +10,10 @@ using eStoreOnline.Infrastructure.Data;
 using eStoreOnline.Infrastructure.Interfaces;
 using eStoreOnline.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Stripe;
+using Stripe.Checkout;
+using StripeConfiguration = eStoreOnline.Infrastructure.Configurations.StripeConfiguration;
 
 namespace eStoreOnline.Application.Implementations;
 
@@ -17,11 +21,13 @@ public class OrderService : IOrderService
 {
     private readonly ApplicationDbContext _context;
     private readonly IPaymentGatewayService _paymentGatewayService;
+    private readonly StripeConfiguration _options;
 
-    public OrderService(ApplicationDbContext context, IPaymentGatewayService paymentGatewayService)
+    public OrderService(ApplicationDbContext context, IPaymentGatewayService paymentGatewayService, IOptions<StripeConfiguration> options)
     {
         _context = context;
         _paymentGatewayService = paymentGatewayService;
+        _options = options.Value;
     }
 
     public async Task<CreateOrderResponseModel> CreateOrderAsync(CreateOrderRequestModel request)
@@ -44,7 +50,9 @@ public class OrderService : IOrderService
             OrderNumber = GenerateOrderNumber(),
             OrderDate = DateTime.UtcNow,
             CreatedDate = DateTime.UtcNow,
-            ModifiedDate = DateTime.UtcNow
+            ModifiedDate = DateTime.UtcNow,
+            CreatedBy = request.UserId,
+            ModifiedBy = request.UserId
         };
 
         foreach (var cartItem in cart.CartDetails)
@@ -55,7 +63,9 @@ public class OrderService : IOrderService
                 Quantity = cartItem.Quantity,
                 Price = cartItem.Price,
                 CreatedDate = DateTime.UtcNow,
-                ModifiedDate = DateTime.UtcNow
+                ModifiedDate = DateTime.UtcNow,
+                CreatedBy = request.UserId,
+                ModifiedBy = request.UserId
             });
         }
 
@@ -139,6 +149,39 @@ public class OrderService : IOrderService
                 ImageUrl = x.Product.ImageUrl,
             }).ToList(),
         };
+    }
+
+    public async Task<bool> OrderProcessingAsync(OrderProcessingRequestModel request)
+    {
+        var stripeEvent = EventUtility.ConstructEvent(
+            request.BodyContent,
+            request.Signature,
+            _options.WebhookSecret
+        );
+        
+        if (stripeEvent.Data.Object is not Session session)
+            return false;
+        
+        var order = await _context.Orders.FirstOrDefaultAsync(x => x.StripeSessionId == session.Id);
+        
+        if (order == null)
+            return false;
+
+        if (order.OrderStatus == OrderStatus.Completed)
+            return true;
+
+        order.OrderStatus = stripeEvent.Type switch
+        {
+            Events.PaymentIntentSucceeded => OrderStatus.Pending,
+            Events.PaymentIntentCanceled => OrderStatus.Cancelled,
+            Events.CheckoutSessionCompleted => OrderStatus.Completed,
+            Events.CheckoutSessionExpired => OrderStatus.Cancelled,
+            _ => order.OrderStatus
+        };
+
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 
     private string GenerateOrderNumber()

@@ -1,0 +1,21 @@
+@model eStoreOnline.Models.Cart.OrderResultModel
+
+@{
+    Layout = "_eStoreTemplate";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h1 class="page-title">Thank you for your shopping!</h1>
+            <h3>Your Order Number is @Model.OrderNumber</h3>
+            <h2>What's next?</h2>
+            <ul style="list-style-type: none">
+                <li>We will send you the confirmation of the order</li>
+                <li><a href="#">Please feel free to contact us</a> in case your have any issues.</li>
+            </ul>
+
+            <a href="/"  class="btn btn-outline-primary-2 btn-order btn-block">HOME</a>
+        </div>
+    </div>
+</div>

@@ -13,7 +13,7 @@ public class StripePaymentGatewayService : IPaymentGatewayService
         {
             PriceData = new SessionLineItemPriceDataOptions()
             {
-                UnitAmountDecimal = cartItem.Price,
+                UnitAmountDecimal = cartItem.Price * 100,
                 Currency = OrderConstants.DefaultCurrency,
                 ProductData = new SessionLineItemPriceDataProductDataOptions()
                 {

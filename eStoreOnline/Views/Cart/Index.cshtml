@@ -91,7 +91,6 @@
             <hr>
         </div>
         <div class="col-12 col-sm-12 col-md-4 col-lg-4 cart__footer">
-            <form asp-controller="Cart" asp-action="CheckOut" method="post" class="cart style2">
                 <div class="solid-border">
                     <div class="row">
                         <span class="col-6 cart__subtotal-title">
@@ -112,7 +111,6 @@
                         <img src="/images/payment-img.jpg" alt="Payment">
                     </div>
                 </div>
-            </form>
         </div>
     </div>
 </div>
@@ -122,16 +120,20 @@
     <script>
         function checkoutCart(cartId) {
             $.ajax({
-                url: '/Cart/CheckOut?cartId=@Model.CartId',
+                url: '/Cart/CheckOut',
                 type: 'POST',
                 data: {cartId: cartId},
                 success: function (response) {
                     if (response) {
-                        window.location.href = '/Cart/CheckOut';
+                        window.location.href = response.stripeSessionUrl;
                     }
                 }
             });
         }
+        
+        $('#cartCheckout').click(function () {
+            checkoutCart('@Model.CartId');
+        });
         
         function isCartEmpty() {
             return $('.table-cart tr').length === 0;
