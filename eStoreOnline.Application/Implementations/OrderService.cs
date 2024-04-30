@@ -151,6 +151,7 @@ public class OrderService : IOrderService
                 Price = x.Price,
                 Quantity = x.Quantity,
                 ImageUrl = x.Product.ImageUrl,
+                Sku = x.Product.Sku
             }).ToList(),
         };
     }

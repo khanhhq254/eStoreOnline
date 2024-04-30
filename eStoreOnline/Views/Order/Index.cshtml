@@ -7,23 +7,23 @@
 
 <h2>Order History</h2>
 
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        @if (Model.Data.Count > 0)
+<div class="container-fluid p-0">
+    <div class="row justify-content-center mr-3">
+        @if (Model.Data.Count == 0)
         {
             <div>You don't have any orders yet.</div>
         }
         else
         {
-            <div class="col-12 col-sm-12 col-md-8 col-lg-8 main-col">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 px-0">
 
-                <table class="table-cart">
-                    <thead class="cart__row cart__header">
+                <table class="table">
+                    <thead class="thead-dark">
                     <tr>
                         <th class="text-center">Order Number</th>
-                        <th class="text-center">Total Price</th>
                         <th class="text-center">Order Date</th>
                         <th class="text-right">Status</th>
+                        <th class="text-center">Total Price</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -32,23 +32,24 @@
                         <tr class="cart__row border-bottom line1 cart-flex border-top">
                             <td class="cart__meta small--text-left cart-flex-item">
                                 <div class="list-view-item__title">
+                                    <a href="/Order/Detail/@item.Id">
                                     @item.OrderNumber
+                                    </a>
                                 </div>
                             </td>
-
+                            <td class="text-center">
+                                <div>
+                                    <span class="money total-col">@item.OrderDate.ToString("dd MMM yyyy")</span>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div>
+                                    <span class="total-col">@item.OrderStatus</span>
+                                </div>
+                            </td>
                             <td class="cart__update-wrapper cart-flex-item text-right">
-                                <div class="cart__qty text-center">
+                                <div class="text-right">
                                     <span class="money">$@item.TotalPrice.ToMoney()</span>
-                                </div>
-                            </td>
-                            <td class="text-right small--hide cart-price">
-                                <div>
-                                    <span class="money total-col">$@item.OrderDate.ToString("dd MMM yyyy")</span>
-                                </div>
-                            </td>
-                            <td class="text-right small--hide cart-price">
-                                <div>
-                                    <span class="total-col">$@item.OrderStatus</span>
                                 </div>
                             </td>
                         </tr>

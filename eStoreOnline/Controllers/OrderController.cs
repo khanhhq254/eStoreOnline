@@ -27,11 +27,11 @@ public class OrderController : BaseController
         return View(result);
     }
 
-    public async Task<IActionResult> OrderDetail(string orderNumber)
+    public async Task<IActionResult> Detail(int id)
     {
         var result = await _orderService.GetOrderDetailAsync(new GetOrderDetailRequestModel()
         {
-            OrderNumber = orderNumber,
+            OrderId = id,
             UserId = GetCurrentUserId(),
         });
 

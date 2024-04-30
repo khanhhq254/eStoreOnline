@@ -1,0 +1,70 @@
+@using eStoreOnline.Extensions
+@using eStoreOnline.Infrastructure.Extensions
+@model eStoreOnline.Application.Models.Orders.OrderDetailModel
+
+@{
+    ViewBag.Title = "Order Detail " + Model.OrderNumber;
+}
+
+<div class="page-content">
+    <div class="container">
+        <h2>Order Detail</h2>
+        <div class="row">
+            <div class="col-lg-6">Order Number: @Model.OrderNumber</div>
+            <div class="col-lg-6">Order Date: @Model.OrderDate.ToString("yyyy MMMM dd")</div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">Total Amount: $ @Model.TotalAmount.ToMoney()</div>
+            <div class="col-lg-6">Status: <span class="badge @Model.OrderStatus.ToCssStyle()">@Model.OrderStatus</span> </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+
+                @if (Model.OrderItems.Count > 0)
+                {
+                    <table class="table table-cart table-mobile">
+                        <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Image</th>
+                            <th>SKU</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        @foreach (var item in Model.OrderItems)
+                        {
+                            <tr>
+                                <td class="product-col">
+                                    <h3 class="product-title">
+                                        <p>@item.ProductName</p>
+                                    </h3><!-- End .product-title -->
+                                </td>
+                                <td>
+                                    <figure class="product-media">
+                                        <img src="@item.ImageUrl" alt="Product image" width="50" height="50">
+                                    </figure>
+                                </td>
+                                <td class="order-date-col">@item.Sku</td>
+                                <td class="status-col">$ @item.Price.ToMoney()</td>
+                                <td class="price-col">@item.Quantity</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="justify-content-center">
+                        <h3 class="text-center">No Item Found</h3>
+                    </div>
+                }
+
+            </div><!-- End .col-lg-12 -->
+
+
+        </div><!-- End .row -->
+    </div><!-- End .container -->
+</div><!-- End .page-content -->
