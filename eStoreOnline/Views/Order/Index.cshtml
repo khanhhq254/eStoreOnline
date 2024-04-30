@@ -94,7 +94,7 @@
                         @if (Model.PageIndex < Model.TotalPages)
                         {
                             <li class="page-item">
-                                <a class="page-link p-0" href="/Order/@(Model.PageIndex + 1)">&gt;</a>
+                                <a class="page-link p-0" href="/Order?pageIndex=@(Model.PageIndex + 1)">&gt;</a>
                             </li>
                         }
                     </ul>
