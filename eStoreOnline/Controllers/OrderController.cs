@@ -37,4 +37,17 @@ public class OrderController : BaseController
 
         return View(result);
     }
+    
+    [HttpPost]
+    public async Task<bool> ProcessingOrder()
+    {
+        var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
+        var request = new OrderProcessingRequestModel
+        {
+            Signature = Request.Headers["Stripe-Signature"],
+            BodyContent = json
+        };
+        
+        return await _orderService.OrderProcessingAsync(request);
+    }
 }

@@ -2,6 +2,7 @@ using eStoreOnline.Application.Interfaces;
 using eStoreOnline.Application.Models.Carts;
 using eStoreOnline.Models;
 using eStoreOnline.Application.Models.Orders;
+using eStoreOnline.Models.Cart;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -63,13 +64,31 @@ public class CartController : BaseController
     [HttpPost]
     public async Task<JsonResult> CheckOut(int cartId)
     {
-        await _orderService.CreateOrderAsync(new CreateOrderRequestModel()
+        var result = await _orderService.CreateOrderAsync(new CreateOrderRequestModel()
         {
             Domain = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.Value,
             CartId = cartId,
             UserId = GetCurrentUserId()
         });
 
-        return Json("OK");
+        return Json(result);
+    }
+    
+    [HttpGet]
+    public IActionResult Complete(string id)
+    {
+        return View(new OrderResultModel()
+        {
+            OrderNumber = id
+        });
+    }
+
+    [HttpGet]
+    public IActionResult Cancel(string id)
+    {
+        return View(new OrderResultModel()
+        {
+            OrderNumber = id
+        });
     }
 }
