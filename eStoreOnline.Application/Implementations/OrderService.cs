@@ -23,7 +23,8 @@ public class OrderService : IOrderService
     private readonly IPaymentGatewayService _paymentGatewayService;
     private readonly StripeConfiguration _options;
 
-    public OrderService(ApplicationDbContext context, IPaymentGatewayService paymentGatewayService, IOptions<StripeConfiguration> options)
+    public OrderService(ApplicationDbContext context, IPaymentGatewayService paymentGatewayService,
+        IOptions<StripeConfiguration> options)
     {
         _context = context;
         _paymentGatewayService = paymentGatewayService;
@@ -101,15 +102,21 @@ public class OrderService : IOrderService
 
     public async Task<PaginatedModel<OrderModel>> GetOrdersAsync(GetOrderRequestModel request)
     {
-        var orders = await _context.Orders
+        var orderQuery = _context.Orders
             .OrderByDescending(x => x.OrderDate)
             .Skip(request.PageIndex * request.PageSize)
-            .Take(request.PageSize)
-            .Where(x => !string.IsNullOrWhiteSpace(request.UserId) && x.UserId == request.UserId)
-            .ToListAsync();
+            .Take(request.PageSize);
 
-        var total = await _context.Orders.CountAsync(x =>
-            !string.IsNullOrWhiteSpace(request.UserId) && x.UserId == request.UserId);
+        var totalQuery = _context.Orders.AsQueryable();
+
+        if (!string.IsNullOrEmpty(request.UserId))
+        {
+            orderQuery = orderQuery.Where(x => x.UserId == request.UserId);
+            totalQuery = totalQuery.Where(x => x.UserId == request.UserId);
+        }
+
+        var orders = await orderQuery.ToListAsync();
+        var total = await totalQuery.CountAsync();
 
         var orderData = orders.Select(x => new OrderModel
         {
@@ -125,14 +132,27 @@ public class OrderService : IOrderService
 
     public async Task<OrderDetailModel> GetOrderDetailAsync(GetOrderDetailRequestModel request)
     {
-        var order = await _context.Orders
+        var orderQuery = _context.Orders
             .Include(x => x.OrderDetails)
             .ThenInclude(x => x.Product)
-            .Where(x => !string.IsNullOrWhiteSpace(request.UserId) && x.UserId == request.UserId)
-            .Where(x => (request.OrderId.HasValue && x.Id == request.OrderId) ||
-                        (!string.IsNullOrWhiteSpace(request.OrderNumber) && x.OrderNumber == request.OrderNumber))
-            .FirstOrDefaultAsync();
+            .AsQueryable();
 
+        if (!string.IsNullOrEmpty(request.UserId))
+        {
+            orderQuery = orderQuery.Where(x => x.UserId == request.UserId);
+        }
+
+        if (!string.IsNullOrEmpty(request.OrderNumber))
+        {
+            orderQuery = orderQuery.Where(x => x.OrderNumber == request.OrderNumber);
+        }
+
+        if (request.OrderId.HasValue)
+        {
+            orderQuery = orderQuery.Where(x => x.Id == request.OrderId);
+        }
+
+        var order = await orderQuery.FirstOrDefaultAsync();
         var orderKey = request.OrderId.HasValue ? request.OrderId.ToString() : request.OrderNumber;
 
         if (order == null)
@@ -163,12 +183,12 @@ public class OrderService : IOrderService
             request.Signature,
             _options.WebhookSecret
         );
-        
+
         if (stripeEvent.Data.Object is not Session session)
             return false;
-        
+
         var order = await _context.Orders.FirstOrDefaultAsync(x => x.StripeSessionId == session.Id);
-        
+
         if (order == null)
             return false;
 

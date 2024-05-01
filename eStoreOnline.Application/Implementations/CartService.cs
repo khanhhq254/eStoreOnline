@@ -40,11 +40,17 @@ public class CartService : ICartService
 
         if (cartDetail == null)
         {
+            var product = await _context.Products.FindAsync(model.ProductId);
+
+            if (product == null)
+                throw new NotFoundException(nameof(Product), model.ProductId.ToString());
+
             var cartItem = new CartDetail
             {
                 CartId = cart.Id,
                 ProductId = model.ProductId,
                 Quantity = model.Quantity,
+                Price = product.Price,
                 CreatedDate = DateTime.Now,
                 ModifiedDate = DateTime.Now,
                 CreatedBy = model.UserId,
@@ -59,6 +65,8 @@ public class CartService : ICartService
             cartDetail.ModifiedDate = DateTime.Now;
             cartDetail.ModifiedBy = model.UserId;
         }
+        
+        cart.TotalPrice = cart.CartDetails.Sum(x => x.Quantity * x.Price);
 
         await _context.SaveChangesAsync();
     }

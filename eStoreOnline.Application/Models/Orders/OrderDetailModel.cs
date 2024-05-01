@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using eStoreOnline.Domain.Enums;
 
 namespace eStoreOnline.Application.Models.Orders;

@@ -1,0 +1,68 @@
+@using eStoreOnline.Infrastructure.Extensions
+@model eStoreOnline.Application.Models.Orders.OrderDetailModel
+
+@{
+    ViewBag.Title = $"Order - {Model.OrderNumber}";
+}
+
+<h1>Order Detail: @Model.OrderNumber</h1>
+
+<div class="card">
+    <div class="card-body">
+        <form>
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label asp-for="OrderNumber">Order Number</label>
+                    <input asp-for="OrderNumber" class="form-control" placeholder="Product name" disabled>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="OrderDate">Order Date</label>
+                    <input asp-for="OrderDate" type="date" class="form-control" placeholder="Product name" disabled>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="OrderStatus">Order Status</label>
+                    <input asp-for="OrderStatus" class="form-control" placeholder="Description" disabled>
+                </div>
+            </div>
+        </form>
+
+        <div class="card p-2">
+            <div class="table-responsive">
+                <table class="table align-items-center mb-0">
+                    <thead>
+                    <tr>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Product Name</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Sku</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Quantity</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Price</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var order in Model.OrderItems)
+                    {
+                        <tr>
+                            <td class="align-middle text-center">
+                                <img src="@order.ImageUrl" alt="@order.ProductName" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover; object-position: center;"/>
+                            </td>
+                            <td>
+                                <span>@order.ProductName</span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span>@order.Sku</span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span>@order.Quantity</span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span>$ @order.Price.ToMoney()</span>
+                            </td>
+
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
