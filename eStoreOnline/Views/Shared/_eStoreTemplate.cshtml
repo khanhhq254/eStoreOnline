@@ -59,10 +59,10 @@
                                     <div class="language-dropdown">
                                         <span class="language-dd">Hello: @User.Identity.Name</span>
                                         <ul id="language">
-                                            @* @if (User.IsInRole(RoleConstants.Admin)) *@
-                                            @* { *@
-                                            @*     <li class=""><a asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a></li> *@
-                                            @* } *@
+                                            @if (User.IsInRole(RoleConstants.Admin))
+                                            {
+                                                <li class=""><a asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a></li>
+                                            }
                                             <li class=""><a asp-area="Identity" asp-page="/Account/Manage/Index">User Profile</a></li>
                                             <li class="" onclick="logout()">Logout</li>
                                         </ul>
