@@ -1,0 +1,118 @@
+@model eStoreOnline.Areas.Admin.Models.Product.UpdateProductRequestModel
+
+@{
+    ViewBag.Title = $"Products - {Model.Name}";
+}
+
+<h1>Product Detail: @Model.Name</h1>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Detail" method="post" enctype="multipart/form-data">
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label asp-for="Name">Name</label>
+                    <input asp-for="Name" class="form-control" placeholder="Product name">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="UrlSlug">Url Slug</label>
+                    <input asp-for="UrlSlug" class="form-control" placeholder="Product name">
+                    <span asp-validation-for="UrlSlug" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="ShortDescription">Short Description</label>
+                    <input asp-for="ShortDescription" class="form-control" placeholder="Description">
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="Sku">Sku</label>
+                    <input asp-for="Sku" class="form-control" placeholder="SKU Product">
+                    <span asp-validation-for="Sku" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="Price">Price</label>
+                    <input asp-for="Price" class="form-control" placeholder="Price">
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="Image">File input</label>
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input asp-for="Image" type="file" class="custom-file-input">
+                        </div>
+                    </div>
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="Description">Description</label>
+                    <textarea asp-for="Description" class="form-control" placeholder="Description" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="ImageUrl">Image</label><br/>
+                    <input asp-for="ImageUrl" class="form-control" hidden>
+                    <img src="@Model.ImageUrl" alt="Product image" width="200" height="200"/>
+                </div>
+            </div>
+            <div class="row">
+                <button type="submit" class="btn btn-primary">Update Product</button>
+            </div>
+            <hr>
+            @if (Model.IsDeleted)
+            {
+                <div class="row">
+                    <button type="button" disabled class="btn btn-danger">This product is deleted</button>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#modal-delete" class="btn btn-danger">Delete Product</button>
+                </div>
+                <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-labelledby="modal-delete" aria-hidden="true">
+                    <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h6 class="modal-title" id="modal-title-delete">Are you sure want to delete product?</h6>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>This will move product to soft delete and this operation cannot be undone</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="confirmDelete" type="button" class="btn bg-gradient-danger" onclick="deleteProduct()">Delete</button>
+                                <button type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        function deleteProduct() {
+            const deleteButton = $('#confirmDelete');
+            deleteButton.prop( "disabled", true );
+            $.ajax({
+                url: '@Url.Action("Delete", "Product", new{ id = ViewBag.Id })',
+                type: 'POST',
+                success: function (data) {
+                    window.location.href = '@Url.Action("Index", "Product")';
+                },
+                error: function (error) {
+                    deleteButton.prop( "disabled", false );
+                }
+            });
+        }
+    </script>
+}

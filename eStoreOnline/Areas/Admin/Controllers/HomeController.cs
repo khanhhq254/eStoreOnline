@@ -2,8 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eStoreOnline.Areas.Admin.Controllers;
 
-[Area("Admin")]
-public class HomeController : Controller
+public class HomeController : AdminBaseController
 {
     // GET
     public IActionResult Index()

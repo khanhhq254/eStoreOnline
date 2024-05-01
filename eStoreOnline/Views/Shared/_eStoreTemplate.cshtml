@@ -1,3 +1,4 @@
+@using eStoreOnline.Domain.Commons
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 
@@ -58,7 +59,11 @@
                                     <div class="language-dropdown">
                                         <span class="language-dd">Hello: @User.Identity.Name</span>
                                         <ul id="language">
-                                            <li class="">User Profile</li>
+                                            @* @if (User.IsInRole(RoleConstants.Admin)) *@
+                                            @* { *@
+                                            @*     <li class=""><a asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a></li> *@
+                                            @* } *@
+                                            <li class=""><a asp-area="Identity" asp-page="/Account/Manage/Index">User Profile</a></li>
                                             <li class="" onclick="logout()">Logout</li>
                                         </ul>
                                     </div>
@@ -176,7 +181,7 @@
                                     <h4 class="h4">@User.Identity.Name</h4>
                                     <ul>
                                         <li>
-                                            <a href="/Order/1">Order History</a>
+                                            <a asp-controller="Order">Order History</a>
                                         </li>
                                         <li>
                                             <a asp-controller="Home" asp-action="Logout">Logout</a>
@@ -191,12 +196,6 @@
                                         </li>
                                         <li>
                                             <a asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@Context.Request.Path">Register</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Change Password</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">User Profile</a>
                                         </li>
                                     </ul>
                                 }
@@ -251,7 +250,10 @@
                 jQuery('#popup-container').show();
             }
             if (jQuery.cookie('noShowWelcome')) { jQuery('#popup-container').hide(); jQuery('#active-popup').hide(); }
-            reloadCart();
+            const isLoggedIn = @(User.Identity?.IsAuthenticated ?? false);
+            if (isLoggedIn) {
+                reloadCart();
+            }
         });
 
         jQuery(document).mouseup(function(e){

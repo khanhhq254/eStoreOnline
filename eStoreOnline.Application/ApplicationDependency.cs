@@ -11,6 +11,7 @@ public static class ApplicationDependency
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<ICartService, CartService>();
         services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<IStorageService, LocalFileStorageService>();
         return services;
     }
 }

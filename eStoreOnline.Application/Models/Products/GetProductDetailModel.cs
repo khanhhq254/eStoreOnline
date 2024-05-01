@@ -9,4 +9,6 @@ public class GetProductDetailModel
     public decimal Price { get; set; }
     public string Sku { get; set; }
     public string ImageUrl { get; set; } = string.Empty;
+    public string UrlSlug { get; set; } = string.Empty;
+    public bool IsDeleted { get; set; }
 }

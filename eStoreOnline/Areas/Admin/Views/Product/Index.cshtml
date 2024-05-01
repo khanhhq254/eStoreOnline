@@ -1,0 +1,147 @@
+@using eStoreOnline.Infrastructure.Extensions
+@model eStoreOnline.Application.Models.PaginatedModel<eStoreOnline.Application.Models.Products.GetAllProductModel>
+
+@{
+    ViewBag.Title = "Products";
+}
+
+<h1>Products</h1>
+
+<div class="card p-2">
+    <div class="table-responsive">
+        <table class="table align-items-center mb-0">
+            <thead>
+            <tr>
+                <td colspan="8">
+                    <div class="row me-0">
+                        <div class="col-6">
+                            <input type="text" class="form-control" id="searchText" placeholder="Search here" value="@ViewBag.SearchText">
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-primary" onclick="search()">Search</button>
+                            <a class="btn btn-success" asp-action="Create">Add new Product</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Url Slug</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Short Description</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Price</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Image</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Sku</th>
+                <th class="text-secondary opacity-7"></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var product in Model.Data)
+            {
+                <tr>
+                    <td>
+                        <span>@product.Id</span>
+                    </td>
+                    <td class="align-middle text-center">
+                        <span>@product.ProductName</span>
+                    </td>
+                    <td class="align-middle text-center">
+                        <span>@product.UrlSlug</span>
+                    </td>
+                    <td class="align-middle text-center">
+                        <span>@product.ShortDescription</span>
+                    </td>
+                    <td class="align-middle text-center">
+                        <span>@product.Price.ToMoney()</span>
+                    </td>
+                    <td class="align-middle text-center">
+                        <img src="@product.ImageUrl" alt="@product.ProductName" class="avatar avatar-sm me-3">
+                    </td>
+                    <td class="align-middle text-center">
+                        <span>@product.Sku</span>
+                    </td>
+                    <td class="align-middle">
+                        <a asp-action="Detail" asp-route-id="@product.Id" class="btn btn-outline-info m-0" data-toggle="tooltip" data-original-title="Edit product">
+                            Edit
+                        </a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="8">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination float-end">
+                            @if (Model.PageIndex > 0)
+                            {
+                                <li class="page-item">
+                                    <button class="page-link" aria-label="Previous" data-page="@(Model.PageIndex)">
+                                        <i class="fa fa-angle-left"></i>
+                                        <span class="sr-only">Previous</span>
+                                    </button>
+                                </li>
+                            }
+
+                            @foreach (var item in Model.Pages)
+                            {
+                                if (item == "...")
+                                {
+                                    <li class="page-item">
+                                        <button class="page-link" href="#">@item</button>
+                                    </li>
+                                }
+                                else
+                                {
+                                    @if (item == (Model.PageIndex + 1).ToString())
+                                    {
+                                        <li class="page-item active">
+                                            <button class="page-link " href="#">@item</button>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item">
+                                            <button class="page-link" data-page="@item">@item</button>
+                                        </li>
+                                    }
+                                }
+                            }
+
+                            @if (Model.PageIndex < Model.TotalPages - 1)
+                            {
+                                <li class="page-item">
+                                    <button class="page-link" aria-label="Next" data-page="@(Model.PageIndex + 2)">
+                                        <i class="fa fa-angle-right"></i>
+                                        <span class="sr-only">Next</span>
+                                    </button>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('.page-link').on('click', function () {
+                const page = $(this).data('page');
+                const searchText = $('#searchText').val();
+                if (page) {
+                    window.location.href = `/admin/product/index?searchText=${searchText}&pageIndex=${page}`;
+                }
+            });
+        });
+        
+        function search(){
+            const searchText = $('#searchText').val();
+            window.location.href = `/admin/product/index?searchText=${searchText}`;
+        }
+    </script>
+}
