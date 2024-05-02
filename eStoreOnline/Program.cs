@@ -1,3 +1,4 @@
+using eStoreOnline;
 using eStoreOnline.Application;
 using eStoreOnline.Infrastructure;
 using eStoreOnline.Infrastructure.Data;
@@ -18,11 +19,23 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddScoped<SeedData>(n =>
+{
+    var dbContext = n.GetRequiredService<ApplicationDbContext>();
+    var userManager = n.GetRequiredService<UserManager<IdentityUser>>();
+    var roleManager = n.GetRequiredService<RoleManager<IdentityRole>>();
+    return new SeedData(dbContext, userManager, roleManager);
+});
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddInfrastructure(builder.Configuration)
     .AddApplication();
 
 var app = builder.Build();
+
+using var scope = app.Services.CreateScope();
+await scope.ServiceProvider.GetRequiredService<SeedData>().Seed();
 
 var stripeConfiguration = app.Services
     .GetRequiredService<IOptions<eStoreOnline.Infrastructure.Configurations.StripeConfiguration>>();
