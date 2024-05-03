@@ -53,4 +53,4 @@ The project follows clean architecture principles and is divided into the follow
 dotnet ef database update -p eStoreOnline.Infrastructure -s eStoreOnline
 ```
 
-5. Run the application
+5. Run the application and open the browser to `https://localhost:7072`
